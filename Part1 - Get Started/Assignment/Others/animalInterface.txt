@@ -1,0 +1,854 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Animal interface {
+	Eat()
+	Speak()
+	Move()
+}
+
+type Cow struct{}
+
+func (cow Cow) Eat() {
+	fmt.Println("food: grass")
+}
+
+func (cow Cow) Move() {
+	fmt.Println("locomotion: walk")
+}
+
+func (cow Cow) Speak() {
+	fmt.Println("noise: moo")
+}
+
+type Bird struct{}
+
+func (bird Bird) Eat() {
+	fmt.Println("food: worms")
+}
+
+func (bird Bird) Move() {
+	fmt.Println("locomotion: fly")
+}
+
+func (bird Bird) Speak() {
+	fmt.Println("noise: peep")
+}
+
+type Snake struct{}
+
+func (snake Snake) Eat() {
+	fmt.Println("food: mice")
+}
+
+func (snake Snake) Move() {
+	fmt.Println("locomotion: slither")
+}
+
+func (snake Snake) Speak() {
+	fmt.Println("noise: hsss")
+}
+
+func main() {
+	var req string
+	var s1 string
+	var s2 string
+	m := make(map[string]Animal)
+	cow := Cow{}
+	bird := Bird{}
+	snake := Snake{}
+
+	for {
+		fmt.Print(">")
+		fmt.Scan(&req)
+		fmt.Scan(&s1)
+		fmt.Scan(&s2)
+
+		if (req == "newanimal") {
+			if s2 == "cow" {
+				m[s1] = cow
+			} else if s2 == "bird" {
+				m[s1] = bird
+			} else if s2 == "snake" {
+				m[s1] = snake
+			} else {
+				fmt.Println("Incorrect input. Try again")
+				continue
+			}
+			fmt.Println("Created it!")
+		} else if (req == "query") {
+			ani, ok := m[s1]
+			if !ok {
+				fmt.Println("Incorrect input. Try again")
+			} else {
+				if s2 == "eat" {
+					ani.Eat()
+				} else if s2 == "move" {
+					ani.Move()
+				} else if s2 == "speak" {
+					ani.Speak()
+				} else {
+					fmt.Println("Incorrect input. Try again")
+				}
+			}
+		} else {
+			fmt.Println("Incorrect input. Try again")
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+package main
+
+import "fmt"
+import "strings"
+
+type Animals interface {
+	Eat()
+	Move()
+	Speak()
+	Name() string
+}
+
+type Cow struct {
+	name string
+}
+func (c Cow) Eat() {
+	fmt.Printf("grass\n")
+}
+func (c Cow) Move() {
+	fmt.Printf("walk\n")
+}
+func (c Cow) Speak() {
+	fmt.Printf("moo\n")
+}
+func (c Cow) Name() string {
+	return c.name
+}
+
+type Bird struct {
+	name string
+}
+func (c Bird) Eat() {
+	fmt.Printf("worms\n")
+}
+func (c Bird) Move() {
+	fmt.Printf("fly\n")
+}
+func (c Bird) Speak() {
+	fmt.Printf("peep\n")
+}
+func (c Bird) Name() string {
+	return c.name
+}
+
+type Snake struct {
+	name string
+}
+func (c Snake) Eat() {
+	fmt.Printf("mice\n")
+}
+func (c Snake) Move() {
+	fmt.Printf("slither\n")
+}
+func (c Snake) Speak() {
+	fmt.Printf("hsss\n")
+}
+func (c Snake) Name() string {
+	return c.name
+}
+
+func main() {
+
+	var request_type string
+	sli := make([]Animals, 0)
+	for {
+		fmt.Printf(">")
+		fmt.Scan(&request_type)
+		if strings.Compare(request_type, "X") == 0 {
+			break
+		}
+		if strings.Compare(request_type, "newanimal") == 0 {
+			var animal_name string
+			fmt.Scan(&animal_name)
+			var animal_type string
+			fmt.Scan(&animal_type)
+			var ani1 Animals
+			if strings.Compare(animal_type, "cow") == 0 {
+				cow1 := Cow{animal_name}
+				ani1 = cow1
+				sli = append(sli,ani1)
+			} else if strings.Compare(animal_type, "bird") == 0 {
+				bird1 := Bird{animal_name}
+				ani1 = bird1
+				sli = append(sli,ani1)
+			} else if strings.Compare(animal_type, "snake") == 0 {
+				snake1 := Snake{animal_name}
+				ani1 = snake1
+				sli = append(sli,ani1)
+			} else {
+				fmt.Printf("Enter a valid animal type\n")
+			}
+		} else if strings.Compare(request_type, "query") == 0 {
+			var animal_name string
+			fmt.Scan(&animal_name)
+			var info_type string
+			fmt.Scan(&info_type)
+
+			var flag int
+			for _, ani1 := range sli {
+				if strings.Compare(animal_name,ani1.Name()) == 0 {
+					if strings.Compare(info_type,"eat") == 0 {
+						ani1.Eat()
+						flag = 1
+						break
+					} else if strings.Compare(info_type,"move") == 0 {
+						ani1.Move()
+						flag = 1
+						break
+					} else if strings.Compare(info_type,"speak") == 0 {
+						ani1.Speak()
+						flag = 1
+						break
+					} else {
+						fmt.Printf("Enter a information request\n")
+					}
+				}
+			}
+			if flag == 0 {
+				fmt.Printf("Animal name not found\n")
+			}
+		}
+	}
+}
+//---------------------------------------------------------------------------------------------------------
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+// Named interface describes any entity that can have a name
+type Named interface {
+	getName() string
+}
+
+// Animal interface contains methods that print what animal eat, how it moves and how it speaks.
+type Animal interface {
+	Named
+	Eat()
+	Move()
+	Speak()
+}
+
+// Cow type
+type Cow struct {
+	name string
+}
+
+// Bird type
+type Bird struct {
+	name string
+}
+
+// Snake type
+type Snake struct {
+	name string
+}
+
+//
+// Named interface
+//
+
+func (cow Cow) getName() string {
+	return cow.name
+}
+
+func (bird Bird) getName() string {
+	return bird.name
+}
+
+func (snake Snake) getName() string {
+	return snake.name
+}
+
+//
+// Animal interface
+//
+
+// Eat method from Animal interface
+func (cow Cow) Eat() {
+	fmt.Println("grass")
+}
+
+// Eat method from Animal interface
+func (bird Bird) Eat() {
+	fmt.Println("worms")
+}
+
+// Eat method from Animal interface
+func (snake Snake) Eat() {
+	fmt.Println("mice")
+}
+
+// Move method from Animal interface
+func (cow Cow) Move() {
+	fmt.Println("walk")
+}
+
+// Move method from Animal interface
+func (bird Bird) Move() {
+	fmt.Println("fly")
+}
+
+// Move method from Animal interface
+func (snake Snake) Move() {
+	fmt.Println("slither")
+}
+
+// Speak method from Animal interface
+func (cow Cow) Speak() {
+	fmt.Println("moo")
+}
+
+// Speak method from Animal interface
+func (bird Bird) Speak() {
+	fmt.Println("peep")
+}
+
+// Speak method from Animal interface
+func (snake Snake) Speak() {
+	fmt.Println("hsss")
+}
+
+func isValidCommand(command string) bool {
+	return command == "newanimal" || command == "query"
+}
+
+func isValidAnimal(animal string) bool {
+	return animal == "cow" || animal == "bird" || animal == "snake"
+}
+
+func isValidAnimalProperty(property string) bool {
+	return property == "eat" || property == "move" || property == "speak"
+}
+
+func getRequest() (string, string, string) {
+	var command, name, option string
+	for {
+		fmt.Print(">")
+		if _, err := fmt.Scanln(&command, &name, &option); err != nil {
+			fmt.Println("Error:", err)
+		} else {
+			if isValidCommand(command) {
+				if command == "newanimal" {
+					if isValidAnimal(option) {
+						break
+					} else {
+						fmt.Println("Invalid animal type. Please use 'cow', 'bird' or 'snake'.")
+					}
+				} else if command == "query" {
+					if isValidAnimalProperty(option) {
+						break
+					} else {
+						fmt.Println("Invalid animal property. Please use 'eat', 'move' or 'speak'.")
+					}
+				}
+			} else {
+				fmt.Println("Invalid command. Please use 'newanimal' or 'query'.")
+			}
+		}
+	}
+	return command, name, option
+}
+
+func appendAnimal(animals *[]Animal, animal Animal) {
+	*animals = append(*animals, animal)
+	fmt.Println("Created it!")
+}
+
+func findAnimal(animals []Animal, name string) (Animal, error) {
+	var foundAnimal Animal
+	var err = errors.New("Animal with that name not found")
+	for _, animal := range animals {
+		if Named(animal).getName() == name {
+			foundAnimal = animal
+			err = nil
+			break
+		}
+	}
+	return foundAnimal, err
+}
+
+func main() {
+	var animals []Animal
+
+	for {
+		command, name, option := getRequest()
+		switch command {
+		case "newanimal":
+			switch option {
+			case "cow":
+				appendAnimal(&animals, Cow{name})
+			case "bird":
+				appendAnimal(&animals, Bird{name})
+			case "snake":
+				appendAnimal(&animals, Snake{name})
+			}
+		case "query":
+			var animal Animal
+			var err error
+			if animal, err = findAnimal(animals, name); err != nil {
+				fmt.Println(err)
+				break
+			}
+			switch option {
+			case "eat":
+				animal.Eat()
+			case "move":
+				animal.Move()
+			case "speak":
+				animal.Speak()
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+type cow struct {
+	name string
+}
+
+func (c cow) Eat() {
+	fmt.Println(fmt.Sprintf("%s eats grass",c.name))
+}
+
+func (c cow) Move() {
+	fmt.Println(fmt.Sprintf("%s walk",c.name))
+}
+
+func (c cow) Speak() {
+	fmt.Println(fmt.Sprintf("%s speaks moo",c.name))
+}
+
+type bird struct {
+	name string
+}
+
+func (b bird) Eat() {
+	fmt.Println(fmt.Sprintf("%s eats worms",b.name))
+}
+
+func (b bird) Move() {
+	fmt.Println(fmt.Sprintf("%s fly",b.name))
+}
+
+func (b bird) Speak() {
+	fmt.Println(fmt.Sprintf("%s speaks peep",b.name))
+}
+
+type snake struct {
+	name string
+}
+
+func (s snake) Eat() {
+	fmt.Println(fmt.Sprintf("%s eats mice",s.name))
+}
+
+func (s snake) Move() {
+	fmt.Println(fmt.Sprintf("%s moves like slither",s.name))
+}
+
+func (s snake) Speak() {
+	fmt.Println(fmt.Sprintf("%s speaks hsss",s.name))
+}
+
+type Animal interface {
+	Eat()
+	Move()
+	Speak()
+}
+
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	objMap := make(map[string]Animal)
+	for {
+		fmt.Println()
+		fmt.Println(fmt.Sprintf(`select between "%s" or "%s" command. Each line should contain 3 words starting with the command`, "newanimal", "query"))
+		fmt.Println("allowed animal types are ")
+		fmt.Println("cow")
+		fmt.Println("bird")
+		fmt.Println("snake")
+		fmt.Print("> ")
+		scanner.Scan()
+		command := scanner.Text()
+		commands := strings.Split(command, " ")
+		if len(commands) != 3 {
+			fmt.Println("Incorrect command. Please enter 3 string command")
+			break
+		}
+		switch strings.ToLower(commands[0]) {
+		case "newanimal":
+			var an Animal
+			animalName := commands[1]
+			objectType := commands[2]
+			switch strings.ToLower(objectType) {
+			case "cow":
+				an = cow{name: animalName}
+			case "bird":
+				an = bird{name: animalName}
+			case "snake":
+				an = snake{name: animalName}
+			default:
+				fmt.Println("error. incorrect object type. allowed types are cow, bird, snake.")
+			}
+			objMap[animalName] = an
+			fmt.Println("Created it!")
+		case "query":
+			animalName := commands[1]
+			action := commands[2]
+			var animal Animal
+			animal, ok := objMap[animalName]
+			if !ok {
+				fmt.Println(fmt.Sprintf("animal with name %s not present", animalName))
+				break
+			}
+			switch strings.ToLower(action) {
+			case "eat":
+				animal.Eat()
+			case "move":
+				animal.Move()
+			case "speak":
+				animal.Speak()
+			default:
+				fmt.Println("error. incorrect object type. allowed types are cow, bird, snake.")
+			}
+
+		default:
+			fmt.Println("error - incorrect first command. select b/w newanimal or query.")
+		}
+	}
+}
+//------------------------------------------------------------------------------------------------------------------------------
+type Animal interface {
+	Eat()
+	Move()
+	Speak()
+}
+
+// Cow Type
+type Cow struct {
+	food       string
+	locomotion string
+	noise      string
+}
+
+// Bird Type
+type Bird struct {
+	food       string
+	locomotion string
+	noise      string
+}
+
+// Snake Type
+type Snake struct {
+	food       string
+	locomotion string
+	noise      string
+}
+
+// Eat print Cow's food
+func (c Cow) Eat() {
+	fmt.Printf("%s\n", c.food)
+}
+
+// Move print Cow's locomotion
+func (c Cow) Move() {
+	fmt.Printf("%s\n", c.locomotion)
+}
+
+// Speak print Cow's spoken sound
+func (c Cow) Speak() {
+	fmt.Printf("%s\n", c.noise)
+}
+
+// Eat print Bird's food
+func (b Bird) Eat() {
+	fmt.Printf("%s\n", b.food)
+}
+
+// Move print Bird's locomotion
+func (b Bird) Move() {
+	fmt.Printf("%s\n", b.locomotion)
+}
+
+// Speak print Bird's spoken sound
+func (b Bird) Speak() {
+	fmt.Printf("%s\n", b.noise)
+}
+
+// Eat print Snake's food
+func (s Snake) Eat() {
+	fmt.Printf("%s\n", s.food)
+}
+
+// Move print Snake's locomotion
+func (s Snake) Move() {
+	fmt.Printf("%s\n", s.locomotion)
+}
+
+// Speak print Snake's spoken sound
+func (s Snake) Speak() {
+	fmt.Printf("%s\n", s.noise)
+}
+
+func assigment4() {
+	var command string
+	var animalName string
+	var animalTypeAction string
+
+	animals := make(map[string]Animal)
+
+	for {
+		fmt.Printf(">")
+		fmt.Scan(&command, &animalName, &animalTypeAction)
+
+		if command == "newanimal" {
+			switch animalTypeAction {
+			case "cow":
+				a := Cow{"grass", "walk", "moo"}
+				animals[animalName] = a
+			case "bird":
+				a := Bird{"worms", "fly", "peep"}
+				animals[animalName] = a
+			case "snake":
+				a := Snake{"mice", "slither", "hsss"}
+				animals[animalName] = a
+			}
+		} else if command == "query" {
+			a, ok := animals[animalName]
+			if ok {
+				switch animalTypeAction {
+				case "eat":
+					a.Eat()
+				case "move":
+					a.Move()
+				case "speak":
+					a.Speak()
+				}
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------------------------------------------
+
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"regexp"
+	"strings"
+)
+
+const (
+	argCount      int    = 3
+	commandPrompt string = "> "
+	quitCode      string = "X"
+)
+
+var animalMap map[string]Animal
+var animalArray = []string{"cow", "bird", "snake"}
+var requestArray = []string{"eat", "move", "speak"}
+var commandArray = []string{"newanimal", "query", "show"}
+
+func specifyUsage() {
+	fmt.Println("Usage 1: newanimal <animal_name> <animal_type>")
+	fmt.Println("         where animal_name is a string")
+	fmt.Printf("         where animal_type is one of (%s)\n\n", strings.Join(animalArray, ","))
+	fmt.Println("Usage 2: query <animal_name> <request>")
+	fmt.Println("         where animal_name is a string")
+	fmt.Printf("         where request is one of (%s)\n\n", strings.Join(requestArray, ","))
+	fmt.Println("Usage 3: show ")
+	fmt.Println("         Lists all the animals entered")
+	fmt.Println("Enter X to exit...")
+}
+
+func init() {
+	// https://golang.org/doc/effective_go.html#allocation_new
+	animalMap = make(map[string]Animal)
+}
+
+func show() {
+	for k, v := range animalMap {
+		fmt.Printf("%s is a ", k)
+		switch v.(type) {
+		case Cow:
+			fmt.Print("Cow ")
+		case Bird:
+			fmt.Print("Bird ")
+		case Snake:
+			fmt.Print("Snake ")
+		}
+		fmt.Println(v)
+	}
+}
+
+func createNewAnimal(animalName, animalType string) {
+	switch animalType {
+	case animalArray[0]:
+		animal := Cow{food: "grass", locomotion: "walk", noise: "moo"}
+		animalMap[animalName] = animal
+	case animalArray[1]:
+		animal := Bird{food: "worms", locomotion: "fly", noise: "peep"}
+		animalMap[animalName] = animal
+	case animalArray[2]:
+		animal := Snake{food: "mice", locomotion: "slither", noise: "hsss"}
+		animalMap[animalName] = animal
+	default:
+		fmt.Errorf("%s: Invalid animal type", animalType)
+		specifyUsage()
+		return
+	}
+	fmt.Println("Created it!")
+}
+
+func queryAnimal(animalName, info string) {
+	animal := animalMap[animalName]
+	switch info {
+	case requestArray[0]:
+		fmt.Printf("%s eats %s\n", animalName, animal.Eat())
+	case requestArray[1]:
+		fmt.Printf("%s moves by %s\n", animalName, animal.Move())
+	case requestArray[2]:
+		fmt.Printf("%s speaks %s\n", animalName, animal.Speak())
+	default:
+		fmt.Errorf("%s: Invalid Request", info)
+		specifyUsage()
+	}
+}
+
+func parseCommand(list []string) {
+	if len(list) != argCount {
+		fmt.Errorf("Usage error: require %d arguments", argCount)
+	}
+	switch list[0] {
+	case commandArray[0]:
+		if itemIsInArray(list[2], animalArray) {
+			createNewAnimal(list[1], list[2])
+		}
+	case commandArray[1]:
+		if itemIsInArray(list[2], requestArray) {
+			queryAnimal(list[1], list[2])
+		}
+	case commandArray[2]:
+		show()
+	}
+	fmt.Print(commandPrompt)
+}
+
+func main()  {
+	scanner := bufio.NewScanner(os.Stdin)
+	if err := scanner.Err(); err != nil {
+		log.Print(err)
+	}
+	specifyUsage()
+	fmt.Println(commandPrompt)
+	for scanner.Scan() {
+		userInput := scanner.Text()
+		if userInput == quitCode {
+			os.Exit(0)
+		}
+		userInput = stripSpaces(userInput)
+		userInput = strings.ToLower(userInput)
+		var list = strings.Split(userInput, " ")
+
+		if !(len(list) == argCount && itemIsInArray(list[0], commandArray)) {
+			if list[0] != commandArray[2] {
+				specifyUsage()
+				fmt.Print(commandPrompt)
+				continue
+			}
+		}
+		parseCommand(list)
+	}
+}
+
+type Animal interface {
+	Eat() string
+	Move() string
+	Speak() string
+}
+
+type Cow struct{ food, locomotion, noise string}
+type Bird struct{ food, locomotion, noise string}
+type Snake struct{ food, locomotion, noise string}
+
+func (a Cow) Eat() string {
+	return a.food
+}
+func (a Cow) Move() string {
+	return a.locomotion
+}
+func (a Cow) Speak() string {
+	return a.noise
+}
+
+func (a Bird) Eat() string {
+	return a.food
+}
+
+func (a Bird) Move() string {
+	return a.locomotion
+}
+
+func (a Bird) Speak() string {
+	return a.noise
+}
+
+func (a Snake) Eat() string {
+	return a.food
+}
+
+func (a Snake) Move() string {
+	return a.locomotion
+}
+
+func (a Snake) Speak() string {
+	return a.noise
+}
+
+
+func stripSpaces(input string) string {
+	reLeadcloseWhtsp := regexp.MustCompile(`^[\s\p{Zs}]+|[\s\p{Zs}]+$`)
+	reInsideWhtsp := regexp.MustCompile(`[\s\p{Zs}]{2,}`)
+	result := reLeadcloseWhtsp.ReplaceAllString(input, "")
+	result = reInsideWhtsp.ReplaceAllString(result, " ")
+	return result
+}
+
+func itemIsInArray(item string, array []string) bool {
+	for _, i := range array {
+		if i == item {
+			return true
+		}
+	}
+	return false
+}
+//-------------------------------------------------------------------------------------
+
+

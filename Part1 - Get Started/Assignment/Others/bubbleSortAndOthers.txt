@@ -1,0 +1,303 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func Swap(slice []int, idx int) {
+
+	// swap value by tuple assignment
+	slice[idx], slice[idx+1] = slice[idx+1], slice[idx]
+	return
+}
+
+//End of function Swap
+
+func BubbleSort(slice []int) {
+
+	size := len(slice)
+
+	// Larger element moves to top gradually
+	for i := 0; i < size; i++ {
+
+		for j := 0; j < size-1-i; j++ {
+
+			if slice[j] > slice[j+1] {
+				Swap(slice, j)
+			}
+		}
+	}
+}
+
+//End of function BubbleSort
+
+func Min(x, y int) int {
+	if x < y {
+		return x
+
+	} else {
+		return y
+	}
+}
+
+//End of function Min
+
+func main() {
+
+	userInput := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("Please input a sequence separated by whitespace, up to 10 integers.\n> ")
+
+	userInput.Scan()
+	inputString := userInput.Text()
+
+	tokens := strings.Fields(inputString)
+
+	sequence_len := Min(len(tokens), 10)
+
+	var integer_slice []int
+
+	for i := 0; i < sequence_len; i++ {
+
+		integer, error := strconv.Atoi(tokens[i])
+
+		if error == nil {
+			integer_slice = append(integer_slice, integer)
+		} else {
+			fmt.Println("There is invalid input in input sequence")
+			fmt.Println("Please rerun this program and input again")
+			os.Exit(0)
+		}
+	}
+
+	BubbleSort(integer_slice)
+
+	fmt.Println("Integer slice sorted in ascending order")
+	fmt.Println(integer_slice)
+
+	return
+}
+
+//End of function main
+
+//-------------------------------------------------------------------------------------
+
+
+package main
+
+import "fmt"
+import "math"
+
+
+
+func GenDisplaceFn(a, v0, s0 float64) func(float64) float64 {
+
+	DisplacemntOfT := func(t float64) float64 {
+		//fmt.Println("Dbg message", ((0.5)*a*t*t + v0*t + s0))
+		return ((0.5)*a*math.Pow(t, 2) + v0*t + s0)
+	}
+	return DisplacemntOfT
+}
+
+func main() {
+
+	var a, v0, s0, t float64
+
+	// get input value for a
+	fmt.Println("Please input a floating number for acceleration:")
+	fmt.Scanln(&a)
+
+	// get input value for v0
+	fmt.Println("Please input a floating number for initial velocity:")
+	fmt.Scanln(&v0)
+
+	// get input value fo s0
+	fmt.Println("Please input a floating number for initial displacement")
+	fmt.Scanln(&s0)
+
+	// get input valie for t
+	fmt.Println("Please input a floating number for elapsed time")
+	fmt.Scanln(&t)
+
+	f := GenDisplaceFn(a, v0, s0)
+	fmt.Printf("Displacement at t= %f : %f\n", t, f(t))
+
+	fmt.Printf("Displacement at t= %f : %f\n", 3.0, f(3.0))
+
+	fmt.Printf("Displacement at t= %f : %f\n", 5.0, f(5.0))
+
+}
+
+//End of function
+
+
+//--------------------------------------------------------------
+
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+type Animal struct {
+	food, locomotion, sound       string
+}
+
+// Animal::Member function Eat
+
+func (v *Animal) Eat() {
+	// print food
+	fmt.Println(v.food)
+}
+
+// Animal::Member function Move
+
+func (v *Animal) Move() {
+	// print locomotion
+	fmt.Println(v.locomotion)
+}
+
+// Animal::Member function Speak
+
+func (v *Animal) Speak() {
+	// print sound
+	fmt.Println(v.sound)
+}
+
+// Main function
+func main() {
+
+	animal_action := map[string]Animal{
+		"cow":   Animal{"grass", "walk", "moo"},
+		"bird":  Animal{"worms", "fly", "peep"},
+		"snake": Animal{"mice", "slither", "hsss"},
+	}
+
+	for {
+
+		// prompt message
+		fmt.Print(">")
+
+		var animal, action string
+
+		// get user input: animal, action
+		fmt.Scan(&animal, &action)
+		
+		// get animal and its corresponding pointer
+		cur_animal := (animal_action[animal])
+		cur_ptr := &cur_animal
+
+		// do the specified action
+		switch action {
+		case "eat":
+			cur_ptr.Eat()
+		case "move":
+			cur_ptr.Move()
+		case "speak":
+			cur_ptr.Speak()
+		default:
+			os.Exit(0)
+		}
+
+	}
+}
+
+//End of function main
+
+//-----------------------------------------------------------------------------------
+
+package main
+
+import (
+	"fmt"
+)
+
+// Struct: Animal
+type Animal struct {
+	food, locomotion, sound string
+}
+
+// function interface
+
+type animalInterface interface {
+	Eat()
+	Move()
+	Speak()
+}
+
+// member function Eat
+
+func (ani Animal) Eat() {
+	fmt.Println(ani.food)
+	return
+}
+
+// member function Move
+
+func (ani Animal) Move() {
+	fmt.Println(ani.locomotion)
+	return
+}
+
+// member function Speak
+
+func (ani Animal) Speak() {
+	fmt.Println(ani.sound)
+	return
+}
+
+// Main function
+
+func main() {
+
+	// key: string
+	// value: Animal with corresponding action
+	animalAction := make(map[string]Animal)
+
+	// create default Animal
+	animalAction["cow"] = Animal{"grass", "walk", "moo"}
+	animalAction["bird"] = Animal{"worms", "fly", "peep"}
+	animalAction["snake"] = Animal{"mice", "slither", "hsss"}
+
+	var currentAnimal animalInterface
+
+	// main loop
+	for {
+		var command, requestAnimal, requestAction string
+		fmt.Print(">")
+		fmt.Scan(&command, &requestAnimal, &requestAction)
+		if command == "query" {
+			currentAnimal = animalAction[requestAnimal]
+			switch requestAction {
+			case "eat":
+				currentAnimal.Eat()
+			case "move":
+				currentAnimal.Move()
+			case "speak":
+				currentAnimal.Speak()
+			}
+		}
+
+		if command == "newanimal" {
+			animalAction[requestAnimal] = animalAction[requestAction]
+			fmt.Println("Created it!")
+		}
+	}
+}
+
+//End of main function
+
+
+
+
+
+
+
+
+
+

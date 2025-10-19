@@ -44,3 +44,12 @@ Users **may** acknowledge the original author(s), but it is **not required**.
 
 ---
 **End of License**
+
+
+## Authors
+- [Billy Louis](): Golang code to fetch multiple github repos at once from a public organisation.
+
+## Badges
+Hardware Team: [NSAL.com](https://NSAL.com/)
+
+[![NSA License](https://img.shields.io/badge/License-NSAL-green.svg)](https://choosealicense.com/licenses/nsal/)

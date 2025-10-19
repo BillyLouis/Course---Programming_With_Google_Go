@@ -47,7 +47,7 @@ Users **may** acknowledge the original author(s), but it is **not required**.
 
 
 ## Authors
-- [Billy Louis](): Golang code to fetch multiple github repos at once from a public organisation.
+- [Billy Louis](): Golang Specialization
 
 ## Badges
 Hardware Team: [NSAL.com](https://NSAL.com/)
